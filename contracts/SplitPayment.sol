@@ -13,7 +13,7 @@ contract SplitPayment {
     function send(
         address payable[] memory to,
         uint[] memory amount
-    ) public payable onlyOwner {
+    ) payable onlyOwner() public {
         require(
             to.length == amount.length,
             "to and amount arrays must have length"
