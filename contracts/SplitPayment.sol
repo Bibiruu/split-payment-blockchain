@@ -1,29 +1,26 @@
+pragma solidity >=0.4.22 <0.9.0;
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+
 
 contract SplitPayment {
-    //storing address of contract owner
-    address public owner;
-
-    constructor(address _owner) {
-        //executed once when the contract is deployed
-        owner = _owner;
+  address owner;
+  
+  constructor(address _owner) {
+      owner = _owner; 
+  }
+  
+  function send(address payable[] memory to, uint[] memory amount ) 
+    payable 
+    public 
+    ownerOnly {
+    require(to.length == amount.length, 'to must be same length as amount');
+    for(uint i = 0; i < to.length; i++) {
+      to[i].transfer(amount[i]);
     }
-    //to, an array of payable(send and receive ETH) addresses (recipients)
-    function send(
-        address payable[] memory to,
-        uint[] memory amount
-    ) payable onlyOwner() public {
-        require(
-            to.length == amount.length,
-            "to and amount arrays must have length"
-        );
-        for (uint i = 0; i < to.length; i++) {
-            to[i].transfer(amount[i]);
-        }
-    }
-    modifier onlyOwner() {
-        require(msg.sender == owner, "only owner can send transfers");
-        _;
-    }
+  }
+  
+  modifier ownerOnly() {
+    require(msg.sender == owner);
+    _;
+  }
 }
