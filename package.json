@@ -21,6 +21,8 @@
   },
   "homepage": "https://github.com/Bibiruu/split-payment-blockchain#readme",
   "dependencies": {
+    "@truffle/hdwallet-provider": "^2.1.15",
+    "dotenv": "^16.4.5",
     "truffle": "^5.11.5"
   }
 }
