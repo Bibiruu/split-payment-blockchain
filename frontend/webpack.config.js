@@ -10,7 +10,8 @@ module.exports = {
   devServer: {
     static: path.join(__dirname, 'public'),
     compress: true,
-    port: 8080
+    port: 8080,
+    open: true,
   },
   resolve: {
     alias: {

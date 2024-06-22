@@ -57,7 +57,7 @@ const initApp = () => {
       .map(value => parseInt(value));
       const total = amount.reduce((sum,val) => sum += value);
       splitPayment.methods
-      .send(amount,to)
+      .send(to, amount)
       .send({ from: accounts[0], value: total})
       .then( result => {
         $sendResult.innerHTML = `Transfer sent!`;
