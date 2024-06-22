@@ -6,20 +6,18 @@ let splitPayment;
 
 const initWeb3 = () => {
   return new Promise((resolve, reject) => {
-    if(typeof window.ethereum !== 'undefined') {
-      const web3 = new Web3(window.ethereum);
-      window.ethereum.enable()
+    if (typeof window.ethereum !== 'undefined') {
+      web3 = new Web3(window.ethereum);
+      window.ethereum.request({ method: 'eth_requestAccounts' })
         .then(() => {
-          resolve(
-            new Web3(window.ethereum)
-          );
+          resolve(web3);
         })
         .catch(e => {
           reject(e);
         });
       return;
     }
-    if(typeof window.web3 !== 'undefined') {
+    if (typeof window.web3 !== 'undefined') {
       return resolve(
         new Web3(window.web3.currentProvider)
       );
@@ -31,7 +29,7 @@ const initWeb3 = () => {
 const initContract = async () => {
   const networkId = await web3.eth.net.getId();
   return new web3.eth.Contract(
-    SplitPayment.abi, 
+    SplitPayment.abi,
     SplitPayment
       .networks[networkId]
       .address
@@ -49,22 +47,22 @@ const initApp = () => {
       accounts = _accounts;
     });
 
-    $send.addEventListener('submit', error => {
-      error.preventDefault();
-      const to = error.target.elements[0].value.split(',');
-      const amount = error.target.elements[1].value
-      .split(',')
-      .map(value => parseInt(value));
-      const total = amount.reduce((sum,val) => sum += value);
+    $send.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const to = e.target.elements[0].value.split(',');
+      const amount = e.target.elements[1].value
+        .split(',')
+        .map(val => parseInt(val));
+      const total = amount.reduce((sum, val) => sum += val);
       splitPayment.methods
-      .send(to, amount)
-      .send({ from: accounts[0], value: total})
-      .then( result => {
-        $sendResult.innerHTML = `Transfer sent!`;
-      })
-      .catch(error => {
-        $sendResult.innerHTML = `Ooops... there was an error while trying to send a split payment...`;
-      });
+        .send(to, amount)
+        .send({from: accounts[0], value: total, gas: 2850000, gasPrice: web3.utils.toWei('2.6', 'gwei')})
+        .then(result => {
+          $sendResult.innerHTML = `Transfer sent!`;
+        })
+        .catch(_e => {
+          $sendResult.innerHTML = `Ooops... there was an error while trying to send a split payment...`;
+        });
     });
 
 };
@@ -78,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .then(_splitPayment => {
       splitPayment = _splitPayment;
-      initApp(); 
+      initApp();
     })
-    .catch(e => console.log(e.message));
+    .catch(error => console.log(error.message));
 });

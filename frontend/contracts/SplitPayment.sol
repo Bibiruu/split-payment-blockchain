@@ -20,7 +20,7 @@ contract SplitPayment {
   }
   
   modifier ownerOnly() {
-    require(msg.sender == owner, "VM error while processing transaction: revert");
+    require(msg.sender == owner);
     _;
   }
 }

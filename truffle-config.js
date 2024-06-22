@@ -16,8 +16,8 @@ module.exports = {
 
     sepolia: {
       provider: () => new HDWalletProvider(
-        process.env.MNEMONIC, 
-        `https://sepolia.infura.io/v3/${process.env.INFURA_ENDPOINT}`, {
+        process.env.MNEMONIC,
+        `https://eth-sepolia.g.alchemy.com/v2/${process.env.ALCHMY_ENDPOINT}`, {
         //connection to be reused for multiple requests, rather than establishing a new oe
         providerOptions: {
           keepAlive: true,
@@ -34,14 +34,14 @@ module.exports = {
           //Function to calculate retry interval
           interval: exponentialBackoff
         },
-        }
+      }
       ),
       network_id: 11155111
     }
   },
   compilers: {
     solc: {
-      version: "0.8.19",  
+      version: "0.8.19",
     }
   },
 };
