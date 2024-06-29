@@ -26,6 +26,8 @@ module.exports = {
           shareNonce: true,
           //time out to 20sec,prevent from waiting indefinitely
           networkCheckTimeout: 10000,
+          gas: 30000000,               // Gas limit
+          gasPrice: 10000000000,    // 10 Gwei
           timeoutBlocks: 200,
           skipDryRun: true
         },

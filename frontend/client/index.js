@@ -28,6 +28,7 @@ const initWeb3 = () => {
 
 const initContract = async () => {
   const networkId = await web3.eth.net.getId();
+  console.log('networkid', networkId)
   return new web3.eth.Contract(
     SplitPayment.abi,
     SplitPayment
@@ -47,24 +48,33 @@ const initApp = () => {
       accounts = _accounts;
     });
 
-    $send.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const to = e.target.elements[0].value.split(',');
-      const amount = e.target.elements[1].value
-        .split(',')
-        .map(val => parseInt(val));
-      const total = amount.reduce((sum, val) => sum += val);
-      splitPayment.methods
-        .send(to, amount)
-        .send({from: accounts[0], value: total, gas: 2850000, gasPrice: web3.utils.toWei('2.6', 'gwei')})
-        .then(result => {
-          $sendResult.innerHTML = `Transfer sent!`;
-        })
-        .catch(_e => {
-          $sendResult.innerHTML = `Ooops... there was an error while trying to send a split payment...`;
-        });
-    });
+  $send.addEventListener('submit', e => {
+    e.preventDefault();
 
+    // Get the recipient addresses and amounts in Ether
+    const to = e.target.elements[0].value.split(',').map(address => address.trim());
+    const amountInEther = e.target.elements[1].value.split(',').map(val => parseFloat(val.trim()));
+    const amountInWei = amountInEther.map(val => web3.utils.toWei(val.toString(), 'ether'));
+
+    // Calculate the total amount to be sent in Wei
+    const totalInWei = amountInWei.reduce((sum, val) => sum + BigInt(val), BigInt(0));
+
+    // Log the values
+    console.log('TO:', to);
+    console.log('AMOUNT IN WEI:', amountInWei);
+    console.log('TOTAL IN WEI:', totalInWei.toString());
+    console.log('owner', accounts[0]);
+
+    splitPayment.methods
+      .send(to, amountInWei)
+      .send({ from: accounts[0], value: totalInWei.toString() })
+      .then(() => {
+        $sendResult.innerHTML = `Transfer sent!`;
+      })
+      .catch(_e => {
+        $sendResult.innerHTML = `Ooops... there was an error while trying to send a split payment...`;
+      });
+  });
 };
 
 

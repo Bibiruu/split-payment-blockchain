@@ -50,7 +50,7 @@ contract('SplitPayment', (accounts) => {
                 amounts, { from: accounts[0], value: 90 }
             );
         } catch (error) {
-            assert(error.message.includes("to must be same length as amount"));
+            assert(error.message.includes('Arrays must be of the same length'));
             return;
         }
         assert(false);
@@ -67,7 +67,7 @@ contract('SplitPayment', (accounts) => {
                 amounts, { from: accounts[5], value: 90 }
             );
         } catch (error) {
-            assert(error.message.includes("VM error while processing transaction: revert"));
+            assert(error.message.includes('VM Exception while processing transaction: revert'));
             return;
         }
         assert(false);

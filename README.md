@@ -35,6 +35,5 @@ Manipulating the DOM to display transaction results or errors, enhancing the use
 
 
 Scan transaction hash from Etherscan to the testnet deployment from ALCHEMY endpoint:
-Migrations: 0x086bd27b6d230246184c1f0ebfdc301ee5a092e16d3440d36857a2afd146f9c4
-SplitPayment: 0x1cea0ed1adf77c8aa20bbf3f9d8f49c5c43ad3ab9278126c4597fbe8648c9adc
-
+Migrations: 0x68c169bac90144fc7d91702a58f119d0d4238457e12528a8ab78f7bb8798f83c
+SplitPayment:  0xa31565d48f75ff536d231e18a9f57a5f840be22bd624f2851371a6ada2bb93e4
